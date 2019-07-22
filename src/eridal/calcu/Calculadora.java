@@ -1,8 +1,14 @@
 package eridal.calcu;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Calculadora {
+
+  /**
+   * Entrada del usuario, deconstruida en operadores y operandos
+   */
+  private static Object[] entrada;
 
   /**
    * El resultado de evaluar el ingreso del usuario
@@ -39,11 +45,6 @@ public class Calculadora {
   }
 
   /**
-   * Solo para alternar entre error y resultado
-   */
-  private static boolean simularError = false;
-
-  /**
    * Procesa la entrada del usuario y genera una salida
    *
    * Esta forma de proceso no es la ideal, pero aun no sabemos
@@ -54,16 +55,75 @@ public class Calculadora {
    */
   private static boolean procesar(final String input) {
 
-    final boolean fueOK = !simularError;
+    final boolean fueOK = reconocer(input);
 
     if (fueOK) {
-      salida = input; // por ahora la salida es lo mismo que recibimos
-    } else {
-      error = "Error: probando errores"; // por ahora un unico mensaje de error
+      salida = String.valueOf(entrada.length); // por ahora la salida es la cantidad de cosas encontradas
     }
 
-    simularError = ! simularError;
-
     return fueOK;
+  }
+
+  /**
+   * @return `true` si pudo reconocer el ingreso completo
+   */
+  private static boolean reconocer(final String input) {
+
+    final Object[] pedazos = new Object[1000]; // maximo 1000 pedazos por ahora
+
+    int cant = 0;
+
+    final Scanner sc = new Scanner(input);
+
+    while (sc.hasNext()) {
+
+      if (reconocerNumeros(sc, pedazos, cant)) {
+        cant += 1;
+      }
+      else {
+        final String nidea = sc.next();
+        error = "error: " + nidea + " no reconocido";
+        sc.close();
+        return false;
+      }
+    }
+
+    entrada = Arrays.copyOf(pedazos, cant);
+
+    sc.close();
+
+    return true;
+  }
+
+  /**
+   * @return `true` si pudo reconocer un numero
+   */
+  private static boolean reconocerNumeros(final Scanner sc, final  Object[] pedazos, final int pos) {
+
+    if (sc.hasNextInt()) {
+      final int valor = sc.nextInt();
+      pedazos[pos] = valor;
+      return true;
+    }
+
+    if (sc.hasNextLong()) {
+      final long valor = sc.nextLong();
+      pedazos[pos] = valor;
+      return true;
+    }
+
+    if (sc.hasNextFloat()) {
+      final float valor = sc.nextFloat();
+      pedazos[pos] = valor;
+      return true;
+    }
+
+    if (sc.hasNextDouble()) {
+      final double valor = sc.nextDouble();
+      pedazos[pos] = valor;
+      return true;
+    }
+
+    return false;
   }
 }
