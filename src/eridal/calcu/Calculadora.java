@@ -3,12 +3,14 @@ package eridal.calcu;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import eridal.calcu.pedazos.Pedazo;
+
 public class Calculadora {
 
   /**
    * Entrada del usuario, deconstruida en operadores y operandos
    */
-  private static Object[] entrada;
+  private static Pedazo[] entrada;
 
   /**
    * El resultado de evaluar el ingreso del usuario
@@ -69,7 +71,7 @@ public class Calculadora {
    */
   private static boolean reconocer(final String input) {
 
-    final Object[] pedazos = new Object[1000]; // maximo 1000 pedazos por ahora
+    final Pedazo[] pedazos = new Pedazo[1000]; // maximo 1000 pedazos por ahora
 
     int cant = 0;
 
@@ -105,25 +107,25 @@ public class Calculadora {
 
     if (sc.hasNextInt()) {
       final int valor = sc.nextInt();
-      pedazos[pos] = valor;
+      pedazos[pos] = Pedazo.numeroEntero(valor);
       return true;
     }
 
     if (sc.hasNextLong()) {
       final long valor = sc.nextLong();
-      pedazos[pos] = valor;
+      pedazos[pos] = Pedazo.numeroEntero(valor);
       return true;
     }
 
     if (sc.hasNextFloat()) {
       final float valor = sc.nextFloat();
-      pedazos[pos] = valor;
+      pedazos[pos] = Pedazo.numeroDecimal(valor);
       return true;
     }
 
     if (sc.hasNextDouble()) {
       final double valor = sc.nextDouble();
-      pedazos[pos] = valor;
+      pedazos[pos] = Pedazo.numeroDecimal(valor);
       return true;
     }
 
@@ -145,7 +147,7 @@ public class Calculadora {
     for (String operador : OPERADORES) {
       if (sc.hasNext(operador)) {
         String op = sc.next(operador);
-        pedazos[pos] = op;
+        pedazos[pos] = Pedazo.operador(op);
         return true;
       }
     }
