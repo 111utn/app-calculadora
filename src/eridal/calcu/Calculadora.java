@@ -80,6 +80,9 @@ public class Calculadora {
       if (reconocerNumeros(sc, pedazos, cant)) {
         cant += 1;
       }
+      else if (reconocerOperadores(sc, pedazos, cant)) {
+        cant += 1;
+      }
       else {
         final String nidea = sc.next();
         error = "error: " + nidea + " no reconocido";
@@ -122,6 +125,29 @@ public class Calculadora {
       final double valor = sc.nextDouble();
       pedazos[pos] = valor;
       return true;
+    }
+
+    return false;
+  }
+
+  private static final String[] OPERADORES = {
+    "\\+",
+    "-",
+    "\\*",
+    "/",
+  };
+
+  /**
+   * @return `true` si pudo reconocer un operador
+   */
+  private static boolean reconocerOperadores(final Scanner sc, final  Object[] pedazos, final int pos) {
+
+    for (String operador : OPERADORES) {
+      if (sc.hasNext(operador)) {
+        String op = sc.next(operador);
+        pedazos[pos] = op;
+        return true;
+      }
     }
 
     return false;
