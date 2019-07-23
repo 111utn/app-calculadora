@@ -2,34 +2,57 @@ package eridal.calcu.pedazos;
 
 public class Pedazo {
 
-  private boolean esNumero;
-  private boolean esDecimal;
+  private Numero valor;
+  private Operador oper;
 
-  private Number valor;
-  private String operador;
-
-  private Pedazo (Number valor, boolean esDecimal) {
-    this.esNumero = true;
-    this.esDecimal = esDecimal;
+  private Pedazo (Numero valor) {
     this.valor = valor;
+    this.oper = null;
   }
 
-  private Pedazo (String operador) {
-    this.esNumero = false;
-    this.esDecimal = false;
+  private Pedazo (Operador oper) {
     this.valor = null;
-    this.operador = operador;
+    this.oper = oper;
+  }
+
+  public String toString() {
+    return esNumero()
+      ? String.valueOf(valor)
+      : oper.toString()
+    ;
   }
 
   public static Pedazo numeroEntero(Number valor) {
-    return new Pedazo(valor, false);
+    return new Pedazo(
+      Numero.createEntero(valor)
+    );
   }
 
   public static Pedazo numeroDecimal(Number valor) {
-    return new Pedazo(valor, true);
+    return new Pedazo(
+        Numero.createDecimal(valor)
+    );
   }
 
   public static Pedazo operador(String tipo) {
-    return new Pedazo(tipo);
+    return new Pedazo(
+      new Operador(tipo)
+    );
+  }
+
+  public boolean esNumero() {
+    return valor != null;
+  }
+
+  public boolean esOperador() {
+    return oper != null;
+  }
+
+  public Numero toNumero() {
+    return valor;
+  }
+
+  public Operador toOperador() {
+    return oper;
   }
 }

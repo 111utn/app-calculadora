@@ -3,6 +3,8 @@ package eridal.calcu;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import eridal.calcu.pedazos.Numero;
+import eridal.calcu.pedazos.Operador;
 import eridal.calcu.pedazos.Pedazo;
 
 public class Calculadora {
@@ -60,7 +62,7 @@ public class Calculadora {
     final boolean fueOK = reconocer(input);
 
     if (fueOK) {
-      salida = String.valueOf(entrada.length); // por ahora la salida es la cantidad de cosas encontradas
+      return resolver();
     }
 
     return fueOK;
@@ -153,5 +155,68 @@ public class Calculadora {
     }
 
     return false;
+  }
+
+  /**
+   * Resuelve la expresion y obtiene el resultado final
+   *
+   * CUIDADO:
+   *   El metodo actual NO resuelve operaciones segun las reglas matematicas,
+   *   sino por el order mismo de aparicion de los operadores.
+   *
+   *   Ej: "1 + 2 * 3" es resuelto como ((1 + 2) * 3) = 9
+   *
+   *
+   * @return `true` si la expresion tiene sentido matematico
+   */
+  private static boolean resolver() {
+
+    if (entrada.length == 0) {
+      salida = "";
+      return true;
+    }
+
+    Numero num = null;
+    Operador opr = null;
+
+    for (Pedazo pedazo : entrada) {
+
+      if (pedazo.esNumero()) {
+        if (num == null) {
+          num = pedazo.toNumero();
+        }
+        else if (opr == null) {
+          error = "error: se esperaba operador, encontrado " + pedazo;
+          return false;
+        }
+        else {
+          num = opr.aplicar(num, pedazo.toNumero());
+          opr = null;
+        }
+      }
+      else if (pedazo.esOperador()) {
+        if (num == null) {
+          error = "error: se esperaba operando, encontrado " + pedazo;
+          return false;
+        }
+        else {
+          opr = pedazo.toOperador();
+        }
+      }
+    }
+
+    if (opr != null) {
+      error = "error: se esperaba operando, encontrado " + opr;
+      return false;
+    }
+
+    if (num == null) {
+      error = "error: operacion vacia";
+      return false;
+    }
+
+    salida = String.valueOf(num.getValor());
+
+    return true;
   }
 }
