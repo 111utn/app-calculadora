@@ -6,6 +6,7 @@ import java.util.Scanner;
 import eridal.calcu.pedazos.Numero;
 import eridal.calcu.pedazos.Operador;
 import eridal.calcu.pedazos.Pedazo;
+import eridal.calcu.pedazos.Pedazos;
 
 public class Calculadora {
 
@@ -109,25 +110,25 @@ public class Calculadora {
 
     if (sc.hasNextInt()) {
       final int valor = sc.nextInt();
-      pedazos[pos] = Pedazo.numeroEntero(valor);
+       Pedazos.numeroEntero(valor);
       return true;
     }
 
     if (sc.hasNextLong()) {
       final long valor = sc.nextLong();
-      pedazos[pos] = Pedazo.numeroEntero(valor);
+      pedazos[pos] = Pedazos.numeroEntero(valor);
       return true;
     }
 
     if (sc.hasNextFloat()) {
       final float valor = sc.nextFloat();
-      pedazos[pos] = Pedazo.numeroDecimal(valor);
+      pedazos[pos] = Pedazos.numeroDecimal(valor);
       return true;
     }
 
     if (sc.hasNextDouble()) {
       final double valor = sc.nextDouble();
-      pedazos[pos] = Pedazo.numeroDecimal(valor);
+      pedazos[pos] = Pedazos.numeroDecimal(valor);
       return true;
     }
 
@@ -149,7 +150,7 @@ public class Calculadora {
     for (String operador : OPERADORES) {
       if (sc.hasNext(operador)) {
         String op = sc.next(operador);
-        pedazos[pos] = Pedazo.operador(op);
+        pedazos[pos] = Pedazos.operador(op);
         return true;
       }
     }
