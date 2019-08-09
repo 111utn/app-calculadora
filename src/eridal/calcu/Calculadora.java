@@ -3,7 +3,7 @@ package eridal.calcu;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import eridal.calcu.pedazos.Numero;
+import eridal.calcu.Numero;
 import eridal.calcu.pedazos.Operador;
 import eridal.calcu.pedazos.Pedazo;
 import eridal.calcu.pedazos.Pedazos;

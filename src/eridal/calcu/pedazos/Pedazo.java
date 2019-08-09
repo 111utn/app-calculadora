@@ -1,5 +1,7 @@
 package eridal.calcu.pedazos;
 
+import eridal.calcu.Numero;
+
 public class Pedazo {
 
   private Numero valor;

@@ -1,5 +1,9 @@
 package eridal.calcu.pedazos;
 
+import eridal.calcu.Numero;
+import eridal.calcu.numeros.Decimal;
+import eridal.calcu.numeros.Entero;
+
 public class Operador {
 
   private final String tipo;
@@ -23,13 +27,13 @@ public class Operador {
       final double i = izq.getValorDecimal();
       final double d = der.getValorDecimal();
       final double resultado = calcular(i, d);
-      return Numero.createDecimal(resultado);
+      return new Decimal(resultado);
     }
     else {
       final long i = izq.getValorEntero();
       final long d = der.getValorEntero();
       final long resultado = calcular(i, d);
-      return Numero.createEntero(resultado);
+      return new Entero(resultado);
     }
   }
 
