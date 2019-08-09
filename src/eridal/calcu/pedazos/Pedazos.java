@@ -1,7 +1,9 @@
 package eridal.calcu.pedazos;
 
+import eridal.calcu.Operador;
 import eridal.calcu.numeros.Decimal;
 import eridal.calcu.numeros.Entero;
+import eridal.calcu.opers.Opers;
 
 public class Pedazos {
 
@@ -18,9 +20,8 @@ public class Pedazos {
   }
 
   public static Pedazo operador(String tipo) {
-    return new Pedazo(
-      new Operador(tipo)
-    );
+    final Operador op = Opers.get(tipo);
+    return new Pedazo(op);
   }
 
 }

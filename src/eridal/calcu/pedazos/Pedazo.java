@@ -1,6 +1,7 @@
 package eridal.calcu.pedazos;
 
 import eridal.calcu.Numero;
+import eridal.calcu.Operador;
 
 public class Pedazo {
 

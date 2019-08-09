@@ -3,8 +3,6 @@ package eridal.calcu;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import eridal.calcu.Numero;
-import eridal.calcu.pedazos.Operador;
 import eridal.calcu.pedazos.Pedazo;
 import eridal.calcu.pedazos.Pedazos;
 
@@ -110,7 +108,7 @@ public class Calculadora {
 
     if (sc.hasNextInt()) {
       final int valor = sc.nextInt();
-       Pedazos.numeroEntero(valor);
+      pedazos[pos] = Pedazos.numeroEntero(valor);
       return true;
     }
 
