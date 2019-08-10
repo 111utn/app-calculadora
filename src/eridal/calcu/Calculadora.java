@@ -11,34 +11,31 @@ public class Calculadora {
   /**
    * Entrada del usuario, deconstruida en operadores y operandos
    */
-  private static Pedazo[] entrada;
+  private Pedazo[] entrada;
 
-  /**
-   * El resultado de evaluar el ingreso del usuario
-   */
-  private static String salida;
 
   /**
    * El tipo de error encontrado al evaluar el ingreso del usuario
    */
-  private static String error;
-
+  private String error;
 
   public static void main(String[] args) {
 
     final Scanner sc = new Scanner(System.in);
+    final Calculadora calcu = new Calculadora();
 
     System.out.print("> ");
 
     while (sc.hasNext()) {
 
       final String input = sc.nextLine();
+      final Number salida = calcu.procesar(input);
 
-      if (procesar(input)) {
+      if (salida != null) {
         System.out.println(salida);
       }
       else {
-        System.err.println(error);
+        System.err.println(calcu.error);
       }
 
       System.out.print("> ");
@@ -54,9 +51,9 @@ public class Calculadora {
    * control de errores. Por ahora queda asi.
    *
    *
-   * @return boolean `true` si la entrada pudo ser analizada correctamente
+   * @return Number resultado de la operacion, or `null` si ocurrio algun error
    */
-  private static boolean procesar(final String input) {
+  private Number procesar(final String input) {
 
     final boolean fueOK = reconocer(input);
 
@@ -64,13 +61,13 @@ public class Calculadora {
       return resolver();
     }
 
-    return fueOK;
+    return null;
   }
 
   /**
    * @return `true` si pudo reconocer el ingreso completo
    */
-  private static boolean reconocer(final String input) {
+  private boolean reconocer(final String input) {
 
     final Pedazo[] pedazos = new Pedazo[1000]; // maximo 1000 pedazos por ahora
 
@@ -104,7 +101,7 @@ public class Calculadora {
   /**
    * @return `true` si pudo reconocer un numero
    */
-  private static boolean reconocerNumeros(final Scanner sc, final  Object[] pedazos, final int pos) {
+  private boolean reconocerNumeros(final Scanner sc, final  Object[] pedazos, final int pos) {
 
     if (sc.hasNextInt()) {
       final int valor = sc.nextInt();
@@ -143,7 +140,7 @@ public class Calculadora {
   /**
    * @return `true` si pudo reconocer un operador
    */
-  private static boolean reconocerOperadores(final Scanner sc, final  Object[] pedazos, final int pos) {
+  private boolean reconocerOperadores(final Scanner sc, final  Object[] pedazos, final int pos) {
 
     for (String operador : OPERADORES) {
       if (sc.hasNext(operador)) {
@@ -166,13 +163,12 @@ public class Calculadora {
    *   Ej: "1 + 2 * 3" es resuelto como ((1 + 2) * 3) = 9
    *
    *
-   * @return `true` si la expresion tiene sentido matematico
+   * @return Number resultado de la operacion, or `null` si ocurrio algun error
    */
-  private static boolean resolver() {
+  private Number resolver() {
 
     if (entrada.length == 0) {
-      salida = "";
-      return true;
+      return null;
     }
 
     Numero num = null;
@@ -186,7 +182,7 @@ public class Calculadora {
         }
         else if (opr == null) {
           error = "error: se esperaba operador, encontrado " + pedazo;
-          return false;
+          return null;
         }
         else {
           num = opr.aplicar(num, pedazo.toNumero());
@@ -196,7 +192,7 @@ public class Calculadora {
       else if (pedazo.esOperador()) {
         if (num == null) {
           error = "error: se esperaba operando, encontrado " + pedazo;
-          return false;
+          return null;
         }
         else {
           opr = pedazo.toOperador();
@@ -206,16 +202,14 @@ public class Calculadora {
 
     if (opr != null) {
       error = "error: se esperaba operando, encontrado " + opr;
-      return false;
+      return null;
     }
 
     if (num == null) {
       error = "error: operacion vacia";
-      return false;
+      return null;
     }
 
-    salida = String.valueOf(num.getValor());
-
-    return true;
+    return num.getValor();
   }
 }
