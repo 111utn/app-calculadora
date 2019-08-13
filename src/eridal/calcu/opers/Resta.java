@@ -14,8 +14,4 @@ public class Resta extends OpBase {
   @Override public double aplicar(double izq, double der) {
     return izq - der;
   }
-
-  @Override protected long aplicar(long izq, long der) {
-    return izq - der;
-  }
 }

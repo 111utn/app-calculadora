@@ -11,10 +11,6 @@ public class Suma extends OpBase {
     return SIMBOLO;
   }
 
-  @Override protected long aplicar(long izq, long der) {
-    return izq + der;
-  }
-
   @Override protected double aplicar(double izq, double der) {
     return izq + der;
   }
